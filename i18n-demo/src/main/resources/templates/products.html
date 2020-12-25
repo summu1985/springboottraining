@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{products.page.title}"></title>
+</head>
+<body>
+	<table>
+		<thead>
+			<tr>
+				<th th:text="#{product.id}"></th>
+				<th th:text="#{product.name}"></th>
+				<th th:text="#{product.description}"></th>
+				<th th:text="#{product.rating}"></th>
+				<th th:text="#{product.quantity}"></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:if="${products.empty}">
+				<td colspan="2">No Products Available</td>
+			</tr>
+			<tr th:each="product : ${products}">
+				<td><span th:text="${product.productId}"> Product Id </span></td>
+				<td><span th:text="${product.name}"> Product Name </span></td>
+				<td><span th:text="${product.description}"> Product
+						Description </span></td>
+				<td><span th:text="${product.rating}"> Product Rating </span></td>
+				<td><span th:text="${product.quantity}"> Product
+						Quantity </span></td>
+			</tr>
+		</tbody>
+	</table>
+
+	<button type="button"
+		onclick="window.location.href='http://localhost:8080/store/add-product'">Add
+		a product</button>
+
+	<button type="button" th:text="#{switch-en}"
+		onclick="window.location.href='http://localhost:8080/store/products/?lang=en'"></button>
+	<button type="button" th:text="#{switch-fr}"
+		onclick="window.location.href='http://localhost:8080/store/products/?lang=fr'"></button>
+
+
+</body>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Products</title>
+</head>
+<body>
+<table>
+    <thead>
+        <tr>
+            <th> Product Id </th>
+            <th> Product Name </th>
+            <th> Product Description </th>
+            <th> Product Rating </th>
+            <th> Product Quantity </th>
+        </tr>
+    </thead>
+    <tbody>
+	<tr th:if="${products.empty}">
+            <td colspan="2"> No Products Available </td>
+        </tr>
+        <tr th:each="product : ${products}">
+            <td><span th:text="${product.productId}"> Product Id </span></td>
+            <td><span th:text="${product.name}"> Product Name </span></td>
+            <td><span th:text="${product.description}"> Product Description </span></td>
+            <td><span th:text="${product.rating}"> Product Rating </span></td>
+            <td><span th:text="${product.quantity}"> Product Quantity </span></td>
+        </tr>
+    </tbody>
+</table>
+
+<button type="button" onclick="window.location.href='http://localhost:8080/store/add-product'">Add a product</button>
+</body>
