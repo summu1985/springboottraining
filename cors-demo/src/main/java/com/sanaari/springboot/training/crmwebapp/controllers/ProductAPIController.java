@@ -27,7 +27,7 @@ public class ProductAPIController {
 
 	// Get the product details by
 	// ID
-	@CrossOrigin(origins = "http://localhost:9090")
+	/* @CrossOrigin(origins = "http://localhost:9090") */
 	@GetMapping("/products/{id}")
 	public Optional<Product> getProductById(@PathVariable(value = "id") int id) {
 		return prodRepo.findById(id);

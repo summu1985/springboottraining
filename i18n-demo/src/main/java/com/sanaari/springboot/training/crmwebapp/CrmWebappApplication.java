@@ -8,11 +8,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 @SpringBootApplication
-public class CrmWebappApplication implements WebMvcConfigurer{
+public class CrmWebappApplication implements WebMvcConfigurer {
 
 	public static void main(String[] args) {
 		SpringApplication.run(CrmWebappApplication.class, args);
@@ -27,19 +27,17 @@ public class CrmWebappApplication implements WebMvcConfigurer{
 	 */
 
 	
+	  @Bean public LocaleResolver localeResolver() { final SessionLocaleResolver
+	  localeResolver = new SessionLocaleResolver();
+	  localeResolver.setDefaultLocale(new Locale("en", "US")); return
+	  localeResolver; }
+	 
+
 	/*
-	 * @Bean public LocaleResolver localeResolver() { final SessionLocaleResolver
-	 * localeResolver = new SessionLocaleResolver();
-	 * localeResolver.setDefaultLocale(new Locale("en", "US")); return
-	 * localeResolver; }
+	 * @Bean public LocaleResolver localeResolver() { CookieLocaleResolver
+	 * localeResolver = new CookieLocaleResolver();
+	 * localeResolver.setDefaultLocale(Locale.US); return localeResolver; }
 	 */
-	 
-	
-	
-	  @Bean public LocaleResolver localeResolver() { CookieLocaleResolver
-	  localeResolver = new CookieLocaleResolver();
-	  localeResolver.setDefaultLocale(Locale.US); return localeResolver; }
-	 
 
 	@Bean
 	public LocaleChangeInterceptor localeChangeInterceptor() {
