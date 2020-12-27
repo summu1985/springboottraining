@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{product.page.title}"></title>
+</head>
+<body>
+	<form action="#" th:action="@{/store/product/doshow}" method="get">
+		<table>
+			<tr>
+				<td><label>Product Id</label></td>
+				<td><input type="text" th:name="id" /></td>
+			</tr>
+			<tr>
+				<td><input type="submit" value="Submit" /></td>
+			</tr>
+		</table>
+	</form>
+</body>
+</html>
