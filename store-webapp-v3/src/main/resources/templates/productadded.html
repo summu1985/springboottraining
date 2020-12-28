@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Products</title>
+</head>
+<body>
+<div th:text="${response}">
+</div>
+
+	<br />
+	<button type="button"
+		onclick="window.location.href='/store/v3/product/add'">Add a
+		product</button>
+		<button type="button"
+		onclick="window.location.href='/store/v3/product/delete'">Delete
+		product</button>
+	<button type="button"
+		onclick="window.location.href='/store/v3/products/list'">Back to
+		product listing</button>
+
+	<button type="button" th:text="#{switch-en}"
+		onclick="window.location.href='/store/v3/products/list/?lang=en'"></button>
+	<button type="button" th:text="#{switch-fr}"
+		onclick="window.location.href='/store/v3/products/list/?lang=fr'"></button>
+</body>

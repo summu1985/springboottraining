@@ -20,9 +20,7 @@ public class ProductAPIServiceImpl implements ProductAPIService {
 	@Override
 	public List<Product> getAllProducts() {
 		// TODO Auto-generated method stub
-		List<Product> products = (List<Product>) prodRepo.findAll();
-		products.sort((p1,p2)->p1.getProductId()-p2.getProductId());
-		return products;
+		return (List<Product>) prodRepo.findAll();
 	}
 
 	@Override
@@ -38,41 +36,21 @@ public class ProductAPIServiceImpl implements ProductAPIService {
 	}
 
 	@Override
-	public int deleteProduct(int id) {
+	public void deleteProduct(int id) {
 		// TODO Auto-generated method stub
-		int status = -1;
-		if (prodRepo.findById(id).isPresent()) {
-			try {
-				prodRepo.deleteById(id);
-				status = 0;
-			} catch (Exception ex) {
-				status = 1;
-			}
-		} else {
-			status = -1;
-		}
-
-		return status;
+		prodRepo.deleteById(id);
 	}
 
 	@Override
-	public int updateProduct(int id, Product product) {
+	public Optional<Product> updateProduct(int id, Product product) {
 		// TODO Auto-generated method stub
-		int status = -1;
-		try {
-			Optional<Product> productToUpdate = prodRepo.findById(id);
-			if (productToUpdate.isPresent()) {
-				productToUpdate.get().setDescription(product.getDescription());
-				productToUpdate.get().setName(product.getName());
-				productToUpdate.get().setQuantity(product.getQuantity());
-				productToUpdate.get().setRating(product.getRating());
-				prodRepo.save(productToUpdate.get());
-				status = 0;
-			}
-		} catch (Exception ex) {
-			status = 1;
-		}
-		return status;
+		Optional<Product> productToUpdate = prodRepo.findById(id);
+		productToUpdate.get().setDescription(product.getDescription());
+		productToUpdate.get().setName(product.getName());
+		productToUpdate.get().setQuantity(product.getQuantity());
+		productToUpdate.get().setRating(product.getRating());
+		prodRepo.save(productToUpdate.get());
+		return productToUpdate;
 	}
 
 }

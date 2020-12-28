@@ -1,11 +1,10 @@
 package com.sanaari.springboot.training.crmwebapp.service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.sanaari.springboot.training.crmwebapp.domain.Product;
@@ -20,7 +19,9 @@ public class ProductAPIServiceImpl implements ProductAPIService {
 	@Override
 	public List<Product> getAllProducts() {
 		// TODO Auto-generated method stub
-		return (List<Product>) prodRepo.findAll();
+		List<Product> products = (List<Product>) prodRepo.findAll();
+		products.sort((p1,p2)-> p1.getProductId()-p2.getProductId());
+		return products;
 	}
 
 	@Override
