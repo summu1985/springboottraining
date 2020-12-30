@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -24,11 +25,14 @@ import com.sanaari.springboot.training.crmwebapp.repositories.ProductRepository;
 
 
 @Controller
-@RequestMapping("/v3")
+@RequestMapping("/v4")
 public class ProductController {
 
 	@Autowired
 	ProductRepository prodRepo;
+	
+	@Value("${productSvcBaseURL}")
+	String productServiceBaseURL;
 
 	/*
 	 * @Autowired RestTemplate restTemplate;
@@ -39,7 +43,7 @@ public class ProductController {
 	public String products(Model model) {
 		//http://localhost:8011/product-service/v3/products/
 		//http://product-service/v3/products/
-		ResponseEntity<Product[]> response = restTemplate.getForEntity("http://localhost:8011/product-service/v3/products/",
+		ResponseEntity<Product[]> response = restTemplate.getForEntity(productServiceBaseURL+"/products/",
 				Product[].class);
 		List<Product> products = new ArrayList<Product>();
 		products = Arrays.asList(response.getBody());
@@ -61,7 +65,7 @@ public class ProductController {
 	@RequestMapping(value = "/product/dodelete", method = RequestMethod.GET)
 	public String doDeleteProduct(@RequestParam(value = "id", required = true) String id, Model model) {
 
-		String deleteURL = "http://localhost:8011/product-service/v3/product/" + id + "/";
+		String deleteURL = productServiceBaseURL + "/product/" + id + "/";
 		String response;
 		try {
 			restTemplate.delete(deleteURL);
@@ -78,7 +82,7 @@ public class ProductController {
 	public String doShowproduct(@RequestParam(value = "id", required = true) String id, Model model) {
 
 		ResponseEntity<Product> response = restTemplate
-				.getForEntity("http://localhost:8011/product-service/v3/products/" + id + "/", Product.class);
+				.getForEntity(productServiceBaseURL+"/products/" + id + "/", Product.class);
 		Product product = response.getBody();
 		model.addAttribute("product", product);
 		return "product";
@@ -94,7 +98,7 @@ public class ProductController {
 	@RequestMapping(value = "/product/postadd", method = RequestMethod.POST)
 	public String doAddProduct(Product product, Model model) {
 
-		String addProductURL = "http://localhost:8011/product-service/v3/product/";
+		String addProductURL = productServiceBaseURL+"/product/";
 		String response = null;
 		
 		HttpHeaders headers = new HttpHeaders();

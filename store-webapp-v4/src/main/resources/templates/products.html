@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{products.page.title}"></title>
+</head>
+<body>
+	<table border="1">
+		<thead>
+			<tr>
+				<th th:text="#{product.id}"></th>
+				<th th:text="#{product.name}"></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:if="${products.empty}">
+				<td colspan="2">No Products Available</td>
+			</tr>
+			<tr th:each="product : ${products}">
+				<td><span th:text="${product.productId}"> Product Id </span></td>
+				<td><span th:text="${product.name}"> Product Name </span></td>
+			</tr>
+		</tbody>
+	</table>
+
+	<br />
+	<button type="button"
+		onclick="window.location.href='/store-app/v4/product/add'">Add a
+		product</button>
+	<button type="button"
+		onclick="window.location.href='/store-app/v4/product/delete'">Delete
+		product</button>
+	<button type="button"
+		onclick="window.location.href='/store-app/v4/product/show'">View a
+		product</button>
+
+	<button type="button" th:text="#{switch-en}"
+		onclick="window.location.href='/store-app/v4/products/list/?lang=en'"></button>
+	<button type="button" th:text="#{switch-fr}"
+		onclick="window.location.href='/store-app/v4/products/list/?lang=fr'"></button>
+
+
+</body>
