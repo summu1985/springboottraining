@@ -4,11 +4,10 @@ import java.util.Locale;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
@@ -32,12 +31,32 @@ public class CrmWebappApplication implements WebMvcConfigurer {
 		SpringApplication.run(CrmWebappApplication.class, args);
 	}
 
-	/*
-	 * @LoadBalanced
-	 * 
-	 * @Bean RestTemplate restTemplate() { return new RestTemplate(); }
-	 */
+	@Bean
+	public WebMvcConfigurer corsConfigurer() {
+		return new WebMvcConfigurer() {
+
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("/store/**").allowedOrigins("http://localhost:9090");
+			}
+		};
+	}
 	
+	/*
+	 * @Bean public WebMvcConfigurer corsConfigurer() { return new
+	 * WebMvcConfigurer() {
+	 * 
+	 * @Override public void addCorsMappings(CorsRegistry registry) {
+	 * registry.addMapping("/**"); } }; }
+	 */
+
+	/*
+	 * @Bean public LocaleResolver localeResolver() { final SessionLocaleResolver
+	 * localeResolver = new SessionLocaleResolver();
+	 * localeResolver.setDefaultLocale(new Locale("en", "US")); return
+	 * localeResolver; }
+	 */
+
 	@Bean
 	public LocaleResolver localeResolver() {
 		CookieLocaleResolver localeResolver = new CookieLocaleResolver();
@@ -59,6 +78,11 @@ public class CrmWebappApplication implements WebMvcConfigurer {
 
 	@Bean
 	public Docket productApi() {
+		/*
+		 * return new Docket(DocumentationType.SWAGGER_2).select()
+		 * .apis(RequestHandlerSelectors.basePackage(
+		 * "com.sanaari.springboot.training.crmwebapp.controllers")).build();
+		 */
 
 		return new Docket(DocumentationType.SWAGGER_2).select()
 				.apis(RequestHandlerSelectors.basePackage("com.sanaari.springboot.training.crmwebapp.controllers"))
@@ -68,5 +92,15 @@ public class CrmWebappApplication implements WebMvcConfigurer {
 	private ApiInfo metaData() {
 		return new ApiInfoBuilder().contact(new Contact("John Doe","https://sanaari.com","ysrao@gmail.com")).title("Spring boot Products API")
 				.description("Products Rest API for online store").version("1.0").license("Apache License Version 2.0").licenseUrl("https://www.apache.org.licenses/LICENSE-2.0").build();
+		/*ApiInfo apiInfo = new ApiInfo("Spring boot Products API", "", "1.0",
+				"For training purpose use only. 2020 Sanaari. All rights reserved.",
+				new Contact(),
+				"", "");
+
+		return apiInfo;*/
 	}
+	/*
+	 * @Bean public LocaleResolver localeResolver() { SessionLocaleResolver slr =
+	 * new SessionLocaleResolver(); slr.setDefaultLocale(Locale.US); return slr; }
+	 */
 }

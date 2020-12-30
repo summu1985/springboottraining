@@ -5,6 +5,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,21 +20,27 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
 import com.sanaari.springboot.training.crmwebapp.domain.Product;
+import com.sanaari.springboot.training.crmwebapp.domain.ProductApiResponse;
 import com.sanaari.springboot.training.crmwebapp.repositories.ProductRepository;
 
+
 @Controller
-@RequestMapping("/store/v3")
+@RequestMapping("/v3")
 public class ProductController {
 
 	@Autowired
-	private ProductRepository prodRepo;
+	ProductRepository prodRepo;
 
-	@Autowired
-	RestTemplate restTemplate;
+	/*
+	 * @Autowired RestTemplate restTemplate;
+	 */
+	RestTemplate restTemplate = new RestTemplate();
 
 	@GetMapping("/products/list")
 	public String products(Model model) {
-		ResponseEntity<Product[]> response = restTemplate.getForEntity("http://product-service/store/api/v2/products/",
+		//http://localhost:8011/product-service/v3/products/
+		//http://product-service/v3/products/
+		ResponseEntity<Product[]> response = restTemplate.getForEntity("http://localhost:8011/product-service/v3/products/",
 				Product[].class);
 		List<Product> products = new ArrayList<Product>();
 		products = Arrays.asList(response.getBody());
@@ -51,7 +62,7 @@ public class ProductController {
 	@RequestMapping(value = "/product/dodelete", method = RequestMethod.GET)
 	public String doDeleteProduct(@RequestParam(value = "id", required = true) String id, Model model) {
 
-		String deleteURL = "http://product-service/store/api/v2/product/" + id + "/";
+		String deleteURL = "http://localhost:8011/product-service/v3/product/" + id + "/";
 		String response;
 		try {
 			restTemplate.delete(deleteURL);
@@ -68,7 +79,7 @@ public class ProductController {
 	public String doShowproduct(@RequestParam(value = "id", required = true) String id, Model model) {
 
 		ResponseEntity<Product> response = restTemplate
-				.getForEntity("http://product-service/store/api/v2/products/" + id + "/", Product.class);
+				.getForEntity("http://localhost:8011/product-service/v3/products/" + id + "/", Product.class);
 		Product product = response.getBody();
 		model.addAttribute("product", product);
 		return "product";
@@ -83,13 +94,22 @@ public class ProductController {
 
 	@RequestMapping(value = "/product/postadd", method = RequestMethod.POST)
 	public String doAddProduct(Product product, Model model) {
-		Product addedProduct = prodRepo.save(product);
-		String response;
-		if (addedProduct == null) {
+		System.out.println("Product to add : "+product);
+		String addProductURL = "http://localhost:8011/product-service/v3/product/";
+		String response = null;
+		
+		HttpHeaders headers = new HttpHeaders();
+	    headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<Product> request = 
+			      new HttpEntity<Product>(product, headers);
+		//restTemplate.postForObject(addProductURL, product, ProductApiResponse.class);
+		ResponseEntity<ProductApiResponse> apiResponse = restTemplate.postForEntity(addProductURL, request, ProductApiResponse.class);
+		//Product addedProduct = prodRepo.save(product);
+		ProductApiResponse productApiResponse = apiResponse.getBody();
+		if (apiResponse.getStatusCode() != HttpStatus.CREATED) {
 			response = "Product - " + product.getName() + " could not be added !!";
 		} else {
-			response = "Product - " + product.getName() + " was successfully added with product id - "
-					+ product.getProductId();
+			response = "Product - " + product.getName() + " was successfully added. Product Id - " + productApiResponse.productId;
 		}
 		model.addAttribute("response", response);
 		return "productadded";
