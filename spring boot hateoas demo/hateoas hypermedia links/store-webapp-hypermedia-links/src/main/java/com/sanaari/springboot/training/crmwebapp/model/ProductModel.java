@@ -1,0 +1,75 @@
+package com.sanaari.springboot.training.crmwebapp.model;
+
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonRootName;
+import com.sanaari.springboot.training.crmwebapp.domain.Product;
+
+import lombok.EqualsAndHashCode;
+
+@EqualsAndHashCode(callSuper = false)
+@JsonRootName(value = "product")
+@Relation(collectionRelation = "products")
+@JsonInclude(Include.NON_NULL)
+public class ProductModel extends RepresentationModel<ProductModel> {
+	private Integer productId;
+	private String name;
+	private String description;
+	private double rating;
+	private Integer quantity;
+
+	public ProductModel() {
+	}
+	public ProductModel(Integer productId, String name, String description, double rating, Integer quantity) {
+		super();
+		this.productId = productId;
+		this.name = name;
+		this.description = description;
+		this.rating = rating;
+		this.quantity = quantity;
+	}
+	public Integer getProductId() {
+		return productId;
+	}
+	public void setProductId(Integer productId) {
+		this.productId = productId;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public double getRating() {
+		return rating;
+	}
+	public void setRating(double rating) {
+		this.rating = rating;
+	}
+	public Integer getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
+	
+	public Product toEntity() {
+		Product product = new Product();
+		product.setDescription(getDescription());
+		product.setName(getName());
+		product.setProductId(getProductId());
+		product.setQuantity(getQuantity());
+		product.setRating(getRating());
+		
+		return product;
+	}
+}
