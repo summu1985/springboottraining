@@ -1,0 +1,16 @@
+[
+    {
+        "productId": 26,
+        "name": "PearlPet",
+        "description": "Water bottle",
+        "rating": 5.0,
+        "quantity": 40
+    },
+    {
+        "productId": 27,
+        "name": "LaOpala",
+        "description": "Dinner Set",
+        "rating": 4.0,
+        "quantity": 30
+    }
+]
